@@ -1,0 +1,47 @@
+import json
+import calendar
+
+from dateutil.parser import parse as parse_time
+from dateutil.relativedelta import relativedelta
+
+from models import TimetableClass
+
+import re
+RE = re.compile(r'([A-Za-z]+),? (\d+(?:am|pm)) till (\d+(?:am|pm))')
+
+ONE_HOUR = relativedelta(hours=1)
+TWO_HOURS = ONE_HOUR * 2
+
+
+def parse_times(timestr):
+    weekday, start, end = RE.match(timestr).groups()
+
+    assert weekday in calendar.day_name
+
+    span = (
+        parse_time(start + ' ' + weekday),
+        parse_time(end + ' ' + weekday)
+    )
+
+    diff = span[1] - span[0]
+    diff = relativedelta(seconds=diff.total_seconds())
+
+    assert diff == ONE_HOUR or diff == TWO_HOURS, (diff, timestr)
+
+    return span
+
+
+def load_classes():
+    with open('classes.json') as fh:
+        data = json.load(fh)
+
+    yield from [
+        [
+            TimetableClass(
+                name,
+                *parse_times(time)
+            )
+            for time in set(times)
+        ]
+        for name, times in data.items()
+    ]
