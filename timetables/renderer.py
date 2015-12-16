@@ -81,12 +81,7 @@ def render(days):
                 start[1] + (HOUR_HEIGHT * class_hours)
             )
 
-            colour = colours[class_.name.split()[0]]
-            draw.rectangle(
-                (start, stop),
-                fill=colour,
-                outline=colour
-            )
+            draw_rectangle(colours, class_, draw, start, stop)
 
     # trim to hours where classes actually occur
     return img.crop((
@@ -95,3 +90,12 @@ def render(days):
         NUM_DAYS * DAY_WIDTH,
         18 * HOUR_HEIGHT  # classes finish at 6pm (1800 hours in 24 hour time)
     ))
+
+
+def draw_rectangle(colours, class_, draw, start, stop):
+    colour = colours[class_.name.split(' - ')[0]]
+    draw.rectangle(
+        (start, stop),
+        fill=colour,
+        outline=colour
+    )
