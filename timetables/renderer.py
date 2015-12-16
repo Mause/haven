@@ -1,3 +1,4 @@
+import calendar
 from itertools import chain, count
 from matplotlib.cm import get_cmap
 
@@ -44,6 +45,17 @@ def render(days):
     )
 
     draw = ImageDraw(img)
+
+    for day_num, day_name in enumerate(calendar.day_abbr):
+        draw.text(
+            (
+                day_num * DAY_WIDTH,
+                (7 * HOUR_HEIGHT) + (HOUR_HEIGHT / 2)
+            ),
+            day_name.upper(),
+            fill='black',
+            font=SOURCE_CODE_PRO
+        )
 
     # score hour lines
     for hour in range(HOURS):
