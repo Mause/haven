@@ -82,6 +82,7 @@ def render(days):
             )
 
             draw_rectangle(colours, class_, draw, start, stop)
+            draw_label(draw, start, class_)
 
     # trim to hours where classes actually occur
     return img.crop((
@@ -90,6 +91,21 @@ def render(days):
         NUM_DAYS * DAY_WIDTH,
         18 * HOUR_HEIGHT  # classes finish at 6pm (1800 hours in 24 hour time)
     ))
+
+
+def draw_label(draw, start, class_):
+    name = class_.name.split(' - ')[0]
+    name = ''.join(
+        word[:1]
+        for word in name.split()
+        if word[:1].isupper() or word[:1].isdigit()
+    )
+    start = (start[0] + 2, start[1] - 3)
+    draw.text(
+        start,
+        name,
+        font=SOURCE_CODE_PRO
+    )
 
 
 def draw_rectangle(colours, class_, draw, start, stop):
