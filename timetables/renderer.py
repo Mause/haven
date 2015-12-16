@@ -106,6 +106,11 @@ def draw_label(draw, start, class_):
         name,
         font=SOURCE_CODE_PRO
     )
+    draw.text(
+        (start[0], start[1] + 20),
+        class_.name.split(' - ')[1][0],
+        font=SOURCE_CODE_PRO
+    )
 
 
 def draw_rectangle(colours, class_, draw, start, stop):
