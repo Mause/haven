@@ -75,11 +75,10 @@ def render(days):
                 outline=colour
             )
 
-    return img
-    # # trim to hours where classes actually occur
-    # return img.crop((
-    #     0,
-    #     8 * HOUR_HEIGHT,  # classes start at 8am
-    #     NUM_DAYS * DAY_WIDTH,
-    #     18 * HOUR_HEIGHT  # classes finish at 6pm (1800 hours in 24 hour time)
-    # ))
+    # trim to hours where classes actually occur
+    return img.crop((
+        0,
+        8 * HOUR_HEIGHT,  # classes start at 8am
+        NUM_DAYS * DAY_WIDTH,
+        18 * HOUR_HEIGHT  # classes finish at 6pm (1800 hours in 24 hour time)
+    ))
