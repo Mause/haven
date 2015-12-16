@@ -18,7 +18,7 @@ HOURS = 24
 
 def render(days):
     units = {
-        class_.name.split()[0]
+        class_.name.split(' - ')[0]
         for class_ in chain.from_iterable(days.values())
     }
 
