@@ -26,7 +26,11 @@ def parse_times(timestr):
     diff = span[1] - span[0]
     diff = relativedelta(seconds=diff.total_seconds())
 
+    # assert a valid length
     assert diff == ONE_HOUR or diff == TWO_HOURS, (diff, timestr)
+
+    # assert that is ends and after it starts
+    assert span[0] < span[1], span
 
     return span
 
