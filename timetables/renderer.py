@@ -94,21 +94,21 @@ def render(days):
 
 
 def draw_label(draw, start, class_):
-    name = class_.name.split(' - ')[0]
-    name = ''.join(
+    unit_name, class_type = class_.name.split(' - ')
+    unit_initials = ''.join(
         word[:1]
-        for word in name.split()
+        for word in unit_name.split()
         if word[:1].isupper() or word[:1].isdigit()
     )
     start = (start[0] + 2, start[1] - 3)
     draw.text(
         start,
-        name,
+        unit_initials,
         font=SOURCE_CODE_PRO
     )
     draw.text(
         (start[0], start[1] + 20),
-        class_.name.split(' - ')[1][0],
+        class_type[0],
         font=SOURCE_CODE_PRO
     )
 
