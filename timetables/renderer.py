@@ -44,6 +44,17 @@ def render(days):
 
     draw = ImageDraw(img)
 
+    # score hour lines
+    for hour in range(HOURS):
+        y = hour * HOUR_HEIGHT
+        draw.line(
+            (
+                (0, y),
+                (NUM_DAYS * DAY_WIDTH, y),
+            ),
+            fill='grey'
+        )
+
     # draw class boxes
     for day_num, classes in days.items():
         x = day_num
