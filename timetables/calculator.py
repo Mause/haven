@@ -51,21 +51,15 @@ def none_on_bad_days(days):
     )
 
 
-def some_sort_of_scoring_mechanim():
-    pass
-
-
 def main():
     classes = list(load_classes())
 
-    possibles = product(*classes)
-    possibles = list(possibles)
-    print(len(possibles))
 
+    possibles = product(*classes)
     possibles = map(sort_into_days, possibles)
     possibles = filter(lambda days: not overlaps_on_days(days), possibles)
-    possibles = list(possibles)
-    __import__('ipdb').set_trace()
+
+    # user specifyable
     possibles = filter(none_on_bad_days, possibles)
 
     for possible in possibles:
