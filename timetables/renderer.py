@@ -118,8 +118,9 @@ def draw_label(draw, start, class_):
 
 def draw_rectangle(colours, class_, draw, start, stop):
     colour = colours[class_.name.split(' - ')[0]]
+    fill, outline = colour, 'black'
     draw.rectangle(
         (start, stop),
-        fill=colour,
-        outline=colour
+        fill=fill,
+        outline=outline
     )
