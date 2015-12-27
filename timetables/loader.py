@@ -1,3 +1,4 @@
+import re
 import json
 import calendar
 
@@ -6,8 +7,8 @@ from dateutil.relativedelta import relativedelta
 
 from models import TimetableClass
 
-import re
 RE = re.compile(r'([A-Za-z]+),? (\d+(?:am|pm)) till (\d+(?:am|pm))')
+COMMENT_RE = re.compile(r'(//.*)')
 
 ONE_HOUR = relativedelta(hours=1)
 TWO_HOURS = ONE_HOUR * 2
@@ -37,7 +38,7 @@ def parse_times(timestr):
 
 def load_classes():
     with open('classes.json') as fh:
-        data = json.load(fh)
+        data = json.loads(COMMENT_RE.sub('', fh.read()))
 
     yield from [
         [
