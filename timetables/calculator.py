@@ -64,17 +64,25 @@ def main():
     possibles = filter(none_on_bad_days, possibles)
 
     for possible in possibles:
-        img = render(possible)
+        do_render(possible)
 
-        filename = sorted(
-            (key, sorted(value))
-            for key, value in possible.items()
-        )
-        filename = str(filename)
-        filename = md5(filename.encode()).hexdigest()
 
-        print(filename)
-        img.save(join('possibles', filename))
+def determine_filename(possible):
+    # work is required to get these things to be deterministic
+    filename = sorted(
+        (key, sorted(value))
+        for key, value in possible.items()
+    )
+    filename = str(filename)
+    filename = md5(filename.encode()).hexdigest()
+    return '{}.png'.format(filename)
+
+
+def do_render(possible):
+    img = render(possible)
+
+    filename = determine_filename(possible)
+    img.save(join('possibles', filename))
 
 if __name__ == '__main__':
     main()
