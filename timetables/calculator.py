@@ -1,5 +1,6 @@
 import calendar
 from hashlib import md5
+from os.path import join
 from operator import attrgetter
 from itertools import product, tee
 from collections import defaultdict
@@ -73,8 +74,7 @@ def main():
         filename = md5(filename.encode()).hexdigest()
 
         print(filename)
-        img.save('possibles/{}.png'.format(filename))
-
+        img.save(join('possibles', filename))
 
 if __name__ == '__main__':
     main()
