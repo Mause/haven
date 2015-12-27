@@ -124,3 +124,13 @@ def draw_rectangle(colours, class_, draw, start, stop):
         fill=fill,
         outline=outline
     )
+
+    colour = tuple(min(x - 20, 256) for x in colour)
+    draw.rectangle(
+        (
+            start,
+            (stop[0], start[1] + (HOUR_HEIGHT * (2/3)))
+        ),
+        fill=colour,
+        outline=outline
+    )
