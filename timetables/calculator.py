@@ -37,8 +37,8 @@ def sort_into_days(classes):
     return dict(days)
 
 
-def no_overlaps(days):
-    return not any(
+def overlaps_on_days(days):
+    return any(
         overlaps_on_day(classes)
         for classes in days.values()
     )
@@ -69,7 +69,7 @@ def main():
     print(len(possibles))
 
     possibles = map(sort_into_days, possibles)
-    possibles = filter(no_overlaps, possibles)
+    possibles = filter(lambda days: not overlaps_on_days(days), possibles)
     possibles = list(possibles)
     __import__('ipdb').set_trace()
     possibles = filter(none_on_bad_days, possibles)
