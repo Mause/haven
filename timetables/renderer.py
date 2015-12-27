@@ -89,7 +89,10 @@ def render(days):
         0,
         int(7.5 * HOUR_HEIGHT),  # classes start at 8am
         NUM_DAYS * DAY_WIDTH,
-        18 * HOUR_HEIGHT  # classes finish at 6pm (1800 hours in 24 hour time)
+
+        ((18 + 1) * HOUR_HEIGHT)
+        # classes finish at 6pm (1800 hours in 24 hour time)
+        # but we add to include that last hour (5-6pm)
     ))
 
 
