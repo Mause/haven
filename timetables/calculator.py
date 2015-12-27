@@ -19,6 +19,10 @@ def pairs(iterable):
 
 
 def overlaps_on_day(day):
+    '''
+    Given an iterable of objects with `start` and `end` attributes,
+    return True if any of them overlap.
+    '''
     day = sorted(
         day,
         key=attrgetter('start')
@@ -30,6 +34,10 @@ def overlaps_on_day(day):
 
 
 def sort_into_days(classes):
+    '''
+    Given an iterable of objects with a `start` attribute, sorts them into the
+    weekday on which they occur
+    '''
     days = defaultdict(list)
 
     for class_ in classes:
