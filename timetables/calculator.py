@@ -45,16 +45,10 @@ def overlaps_on_days(days):
 
 
 def none_on_bad_days(days):
-    if days.get(DAYS['Tuesday']):
-        return False
-
-    if days.get(DAYS['Thursday']):
-        return False
-
-    if days.get(DAYS['Friday']):
-        return False
-
-    return True
+    return not any(
+        days.get(DAYS[day_name])
+        for day_name in {'Thursday', 'Tuesday', 'Friday'}
+    )
 
 
 def some_sort_of_scoring_mechanim():
