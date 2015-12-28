@@ -7,6 +7,9 @@ from PIL.ImageDraw import ImageDraw
 
 CMAP = get_cmap('rainbow')
 SOURCE_CODE_PRO = ImageFont.truetype('SourceCodePro-Regular.otf', size=25)
+CLASS_TYPES = {
+    'Workshop': 'WSP'
+}
 
 BASE = 50
 RATIO = 70 / 50
@@ -109,9 +112,13 @@ def draw_label(draw, start, class_):
         unit_initials,
         font=SOURCE_CODE_PRO
     )
+    if class_type in CLASS_TYPES:
+        class_type = CLASS_TYPES[class_type]
+    else:
+        class_type = class_type[:3].upper()
     draw.text(
         (start[0], start[1] + 20),
-        class_type[0],
+        class_type,
         font=SOURCE_CODE_PRO
     )
 
