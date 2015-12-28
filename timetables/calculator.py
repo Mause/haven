@@ -108,13 +108,17 @@ def rel(rd):
     return timedelta(microseconds=rd['microseconds'])
 
 
+def all_possible_class_combinations(classes):
+    possibles = product(*classes)
+    possibles = map(sort_into_days, possibles)
+    return filter(lambda days: not overlaps_on_days(days), possibles)
+
+
 def main():
     classes = list(load_classes())
 
 
-    possibles = product(*classes)
-    possibles = map(sort_into_days, possibles)
-    possibles = filter(lambda days: not overlaps_on_days(days), possibles)
+    possibles = all_possible_class_combinations(classes)
 
     # user specifyable
     possibles = filter(none_on_bad_days, possibles)
