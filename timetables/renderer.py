@@ -133,11 +133,8 @@ def draw_rectangle(colours, class_, draw, start, stop):
 
 
 def build_colours(units):
-    colours = dict(zip(
-        sorted(units),
-        map(CMAP, count(0, int(256 / len(units))))
-    ))
+    colours = map(CMAP, count(0, int(256 / len(units))))
     return {
-        name: tuple(x * 256 for x in colour)
-        for name, colour in colours.items()
+        name: tuple(int(x * 256) for x in colour)
+        for name, colour in zip(sorted(units), colours)
     }
