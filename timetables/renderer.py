@@ -28,7 +28,7 @@ def render(days):
     colours = build_colours(units)
 
     img = Image.new(
-        'RGB',
+        'RGBA',
         (
             (NUM_DAYS * DAY_WIDTH),
             (HOURS * HOUR_HEIGHT)
@@ -141,7 +141,8 @@ def build_colours(units):
         name: (
             int(r * 256),
             int(g * 256),
-            int(b * 256)
+            int(b * 256),
+            int(a * 256)
         )
-        for name, (r, g, b, _) in colours.items()
+        for name, (r, g, b, a) in colours.items()
     }
