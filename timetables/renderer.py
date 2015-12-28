@@ -25,18 +25,7 @@ def render(days):
         for class_ in chain.from_iterable(days.values())
     }
 
-    colours = dict(zip(
-        sorted(units),
-        map(CMAP, count(0, int(256 / len(units))))
-    ))
-    colours = {
-        name: (
-            int(r * 256),
-            int(g * 256),
-            int(b * 256)
-        )
-        for name, (r, g, b, _) in colours.items()
-    }
+    colours = build_colours(units)
 
     img = Image.new(
         'RGB',
@@ -141,3 +130,18 @@ def draw_rectangle(colours, class_, draw, start, stop):
         fill=colour,
         outline=outline
     )
+
+
+def build_colours(units):
+    colours = dict(zip(
+        sorted(units),
+        map(CMAP, count(0, int(256 / len(units))))
+    ))
+    return {
+        name: (
+            int(r * 256),
+            int(g * 256),
+            int(b * 256)
+        )
+        for name, (r, g, b, _) in colours.items()
+    }
