@@ -1,9 +1,13 @@
 import calendar
 from hashlib import md5
 from os.path import join
+from datetime import timedelta
 from operator import attrgetter
 from itertools import product, tee
 from collections import defaultdict
+
+from arrow import Arrow
+from dateutil.relativedelta import relativedelta
 
 from loader import load_classes
 from renderer import render
@@ -60,6 +64,45 @@ def none_on_bad_days(days):
     )
 
 
+def average_starting_time(days):
+    days = [
+        sorted(day, key=lambda class_: class_.start)[0].start
+        for day in days.values()
+    ]
+    days = map(Arrow.fromdatetime, days)
+
+    days = [
+        # get start time relative to start of day
+        day - day.floor('day')
+        for day in days
+    ]
+    # average start time :)
+    td = sum(days[1:], days[0]) / len(days)
+    # print(relativedelta(seconds=td.total_seconds()))
+    return td
+
+
+def rel(rd):
+    rd = {
+        'days': rd.days,
+        'hours': rd.hours,
+        'leapdays': rd.leapdays,
+        'microseconds': rd.microseconds,
+        'minutes': rd.minutes,
+        'months': rd.months,
+        'seconds': rd.seconds,
+        'years': rd.years
+    }
+    rd['months'] += rd['years'] * 12
+    rd['days'] += rd['months'] * 30
+    rd['hours'] += (rd['days'] + rd['leapdays']) * 24
+    rd['minutes'] += rd['hours'] * 60
+    rd['seconds'] += rd['minutes'] * 60
+    rd['microseconds'] += rd['seconds'] * 1000000
+
+    return timedelta(microseconds=rd['microseconds'])
+
+
 def main():
     classes = list(load_classes())
 
@@ -70,6 +113,10 @@ def main():
 
     # user specifyable
     possibles = filter(none_on_bad_days, possibles)
+    possibles = filter(
+        lambda days: average_starting_time(days) > rel(relativedelta(hours=9)),
+        possibles
+    )
 
     for possible in possibles:
         do_render(possible)
