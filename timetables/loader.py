@@ -14,10 +14,25 @@ ONE_HOUR = relativedelta(hours=1)
 TWO_HOURS = ONE_HOUR * 2
 
 
-def parse_times(timestr):
-    weekday, start, end = RE.match(timestr).groups()
+class InvalidClassDefinition(Exception):
+    pass
 
-    assert weekday in calendar.day_name
+
+def parse_times(timestr):
+    match = RE.match(timestr)
+
+    if not match:
+        raise InvalidClassDefinition(
+            'Classes should be specified in the format: '
+            '"{weekday_name}, 10am till 12pm"'
+        )
+
+    weekday, start, end = match.groups()
+
+    if weekday not in calendar.day_name:
+        raise InvalidClassDefinition(
+            'Unknown weekday: "{}"'.format(weekday)
+        )
 
     span = (
         parse_time(start + ' ' + weekday),
@@ -28,10 +43,16 @@ def parse_times(timestr):
     diff = relativedelta(seconds=diff.total_seconds())
 
     # assert a valid length
-    assert diff == ONE_HOUR or diff == TWO_HOURS, (diff, timestr)
+    if not (diff == ONE_HOUR or diff == TWO_HOURS):
+        raise InvalidClassDefinition(
+            "Classes should run for one or two hours"
+        )
 
     # assert that is ends and after it starts
-    assert span[0] < span[1], span
+    if not (span[0] < span[1]):
+        raise InvalidClassDefinition(
+            "Classes should end after they start"
+        )
 
     return span
 
