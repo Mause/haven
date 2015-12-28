@@ -138,11 +138,6 @@ def build_colours(units):
         map(CMAP, count(0, int(256 / len(units))))
     ))
     return {
-        name: (
-            int(r * 256),
-            int(g * 256),
-            int(b * 256),
-            int(a * 256)
-        )
-        for name, (r, g, b, a) in colours.items()
+        name: tuple(x * 256 for x in colour)
+        for name, colour in colours.items()
     }
