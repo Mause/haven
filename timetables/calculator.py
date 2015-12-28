@@ -14,6 +14,11 @@ from renderer import render
 
 
 DAYS = dict(zip(calendar.day_name, range(len(calendar.day_name))))
+BAD_DAYS = {
+    'Thursday',
+    'Tuesday',
+    'Friday'
+}
 
 
 def pairs(iterable):
@@ -60,7 +65,7 @@ def overlaps_on_days(days):
 def none_on_bad_days(days):
     return not any(
         days.get(DAYS[day_name])
-        for day_name in {'Thursday', 'Tuesday', 'Friday'}
+        for day_name in BAD_DAYS
     )
 
 
