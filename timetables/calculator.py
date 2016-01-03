@@ -82,9 +82,7 @@ def average_starting_time(days):
         for day in days
     ]
     # average start time :)
-    td = sum(days[1:], days[0]) / len(days)
-    # print(relativedelta(seconds=td.total_seconds()))
-    return td
+    return sum(days[1:], days[0]) / len(days)
 
 
 def rel(rd):
