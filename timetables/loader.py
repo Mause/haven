@@ -14,7 +14,7 @@ ONE_HOUR = relativedelta(hours=1)
 TWO_HOURS = ONE_HOUR * 2
 
 
-class InvalidClassDefinition(Exception):
+class InvalidClassDefinition(ValueError):
     pass
 
 
