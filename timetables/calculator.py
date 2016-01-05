@@ -112,6 +112,16 @@ def all_possible_class_combinations(classes):
     return filter(lambda days: not overlaps_on_days(days), possibles)
 
 
+def even_number_of_classes_per_day(days) -> bool:
+    '''
+    Given a list of lists representing days, calculates the stddev for the
+    number of classes per day.
+    '''
+    import numpy as np
+
+    return np.array(list(map(len, days.values()))).std() < 1.5
+
+
 def main():
     classes = list(load_classes())
 
@@ -122,6 +132,10 @@ def main():
     possibles = filter(none_on_bad_days, possibles)
     possibles = filter(
         lambda days: average_starting_time(days) > rel(relativedelta(hours=9)),
+        possibles
+    )
+    possibles = filter(
+        even_number_of_classes_per_day,
         possibles
     )
 
