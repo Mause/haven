@@ -27,7 +27,7 @@ def pairs(iterable):
     return zip(first, second)
 
 
-def overlaps_on_day(day):
+def overlaps_on_day(day) -> bool:
     '''
     Given an iterable of objects with `start` and `end` attributes,
     return True if any of them overlap.
@@ -42,7 +42,7 @@ def overlaps_on_day(day):
     )
 
 
-def sort_into_days(classes):
+def sort_into_days(classes) -> dict:
     '''
     Given an iterable of objects with a `start` attribute, sorts them into the
     weekday on which they occur
@@ -55,21 +55,21 @@ def sort_into_days(classes):
     return dict(days)
 
 
-def overlaps_on_days(days):
+def overlaps_on_days(days) -> bool:
     return any(
         overlaps_on_day(classes)
         for classes in days.values()
     )
 
 
-def none_on_bad_days(days):
+def none_on_bad_days(days) -> bool:
     return not any(
         days.get(DAYS[day_name])
         for day_name in BAD_DAYS
     )
 
 
-def average_starting_time(days):
+def average_starting_time(days) -> timedelta:
     days = [
         sorted(day, key=lambda class_: class_.start)[0].start
         for day in days.values()
@@ -85,7 +85,7 @@ def average_starting_time(days):
     return sum(days[1:], days[0]) / len(days)
 
 
-def rel(rd):
+def rel(rd: relativedelta) -> timedelta:
     rd = {
         'days': rd.days,
         'hours': rd.hours,
