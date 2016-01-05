@@ -44,21 +44,7 @@ def render(days):
 
     score_hour_lines(draw)
 
-    # draw class boxes
-    for day_num, classes in days.items():
-        x = day_num
-        for class_ in classes:
-            y = class_.start.hour
-            start = x * DAY_WIDTH, y * HOUR_HEIGHT
-
-            class_hours = class_.end.hour - class_.start.hour
-            stop = (
-                start[0] + DAY_WIDTH,
-                start[1] + (HOUR_HEIGHT * class_hours)
-            )
-
-            draw_rectangle(colours, class_, draw, start, stop)
-            draw_label(draw, start, class_)
+    draw_class_boxes(draw, days, colours)
 
     # trim to hours where classes actually occur
     return img.crop((
@@ -148,3 +134,20 @@ def score_hour_lines(draw: ImageDraw):
             ),
             fill='grey'
         )
+
+
+def draw_class_boxes(draw: ImageDraw, days: dict, colours: dict):
+    for day_num, classes in days.items():
+        x = day_num
+        for class_ in classes:
+            y = class_.start.hour
+            start = x * DAY_WIDTH, y * HOUR_HEIGHT
+
+            class_hours = class_.end.hour - class_.start.hour
+            stop = (
+                start[0] + DAY_WIDTH,
+                start[1] + (HOUR_HEIGHT * class_hours)
+            )
+
+            draw_rectangle(colours, class_, draw, start, stop)
+            draw_label(draw, start, class_)
