@@ -42,16 +42,7 @@ def render(days):
 
     draw_weekday_names(draw)
 
-    # score hour lines
-    for hour in range(HOURS):
-        y = hour * HOUR_HEIGHT
-        draw.line(
-            (
-                (0, y),
-                (NUM_DAYS * DAY_WIDTH, y),
-            ),
-            fill='grey'
-        )
+    score_hour_lines(draw)
 
     # draw class boxes
     for day_num, classes in days.items():
@@ -144,4 +135,16 @@ def draw_weekday_names(draw: ImageDraw):
             day_name.upper(),
             fill='black',
             font=SOURCE_CODE_PRO
+        )
+
+
+def score_hour_lines(draw: ImageDraw):
+    for hour in range(HOURS):
+        y = hour * HOUR_HEIGHT
+        draw.line(
+            (
+                (0, y),
+                (NUM_DAYS * DAY_WIDTH, y),
+            ),
+            fill='grey'
         )
