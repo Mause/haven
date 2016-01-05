@@ -1,9 +1,9 @@
 import calendar
 from itertools import chain, count
-from matplotlib.cm import get_cmap
 
 from models import TimetableClass
 
+from matplotlib.cm import get_cmap
 from PIL import Image, ImageFont
 from PIL.ImageDraw import ImageDraw
 
