@@ -1,6 +1,7 @@
 import re
 import json
 import calendar
+from datetime import datetime
 
 from dateutil.parser import parse as parse_time
 from dateutil.relativedelta import relativedelta
@@ -18,7 +19,7 @@ class InvalidClassDefinition(ValueError):
     pass
 
 
-def parse_times(timestr):
+def parse_times(timestr: str) -> (datetime, datetime):
     match = RE.match(timestr)
 
     if not match:
@@ -57,7 +58,7 @@ def parse_times(timestr):
     return span
 
 
-def load_classes():
+def load_classes() -> list:
     with open('classes.json') as fh:
         data = json.loads(COMMENT_RE.sub('', fh.read()))
 

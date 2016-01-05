@@ -2,6 +2,8 @@ import calendar
 from itertools import chain, count
 from matplotlib.cm import get_cmap
 
+from models import TimetableClass
+
 from PIL import Image, ImageFont
 from PIL.ImageDraw import ImageDraw
 
@@ -88,7 +90,7 @@ def render(days):
     ))
 
 
-def draw_label(draw, start, class_):
+def draw_label(draw: ImageDraw, start: ('x', 'y'), class_: TimetableClass):
     unit_name, class_type = class_.name.split(' - ')
     unit_initials = ''.join(
         word[:1]
@@ -112,7 +114,8 @@ def draw_label(draw, start, class_):
     )
 
 
-def draw_rectangle(colours, class_, draw, start, stop):
+def draw_rectangle(colours: dict, class_: TimetableClass, draw: ImageDraw,
+                   start: int, stop: int):
     colour = colours[class_.name.split(' - ')[0]]
     fill, outline = colour, 'black'
     draw.rectangle(
@@ -132,7 +135,7 @@ def draw_rectangle(colours, class_, draw, start, stop):
     )
 
 
-def build_colours(units):
+def build_colours(units: list) -> {'unit_name': 'colour'}:
     colours = map(CMAP, count(0, int(256 / len(units))))
     return {
         name: tuple(int(x * 256) for x in colour)
