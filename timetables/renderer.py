@@ -40,16 +40,7 @@ def render(days):
 
     draw = ImageDraw(img)
 
-    for day_num, day_name in enumerate(calendar.day_abbr):
-        draw.text(
-            (
-                day_num * DAY_WIDTH,
-                (7 * HOUR_HEIGHT) + (HOUR_HEIGHT / 2)
-            ),
-            day_name.upper(),
-            fill='black',
-            font=SOURCE_CODE_PRO
-        )
+    draw_weekday_names(draw)
 
     # score hour lines
     for hour in range(HOURS):
@@ -141,3 +132,16 @@ def build_colours(units: list) -> {'unit_name': 'colour'}:
         name: tuple(int(x * 256) for x in colour)
         for name, colour in zip(sorted(units), colours)
     }
+
+
+def draw_weekday_names(draw: ImageDraw):
+    for day_num, day_name in enumerate(calendar.day_abbr):
+        draw.text(
+            (
+                day_num * DAY_WIDTH,
+                (7 * HOUR_HEIGHT) + (HOUR_HEIGHT / 2)
+            ),
+            day_name.upper(),
+            fill='black',
+            font=SOURCE_CODE_PRO
+        )
