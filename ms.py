@@ -9,6 +9,18 @@ import requests
 logging.basicConfig(level=logging.DEBUG)
 
 
+class ExtendedRB(RoboBrowser):
+    def submit_form(self, *args, **kwargs):
+        super().submit_form(*args, **kwargs)
+        return self
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, *args, **kwargs):
+        self.back()
+
+
 def groupby(iterable, key):
     items = defaultdict(list)
     for item in iterable:
@@ -51,23 +63,16 @@ def parse_unit(unit, browser):
         class_='cssTtableSspNavMasterAction'
     ).input.get('name')
     change_form = browser.get_form()
+
     if change not in change_form.submit_fields:
         raise KeyError((change, change_form.submit_fields))
 
-    # move page
-    browser.submit_form(
-        change_form,
-        submit=change_form.submit_fields[change]
-    )
-
-    # do work
-    sorted_classes = groupby(
-        parse_classes(browser),
-        key=lambda class_: class_['name'].rsplit(' ', 1)[0]
-    )
-
-    # go back
-    browser.back()
+    submit = change_form.submit_fields[change]
+    with browser.submit_form(change_form, submit=submit):
+        sorted_classes = groupby(
+            parse_classes(browser),
+            key=lambda class_: class_['name'].rsplit(' ', 1)[0]
+        )
 
     return {
         'unit_code': unit_code,
@@ -77,7 +82,7 @@ def parse_unit(unit, browser):
 
 
 def get_units(sess):
-    browser = RoboBrowser(history=True, session=sess)
+    browser = ExtendedRB(history=True, session=sess)
 
     browser.open('https://estudent.curtin.edu.au/eStudent/')
     browser.open(
@@ -96,18 +101,10 @@ def get_units(sess):
     for option in ['2016 Semester 1']:
         elbList.value = option
 
-        # move page
-        browser.submit_form(
-            form,
-            submit=form.submit_fields['ctl00$Content$ctlFilter$BtnSearch']
-        )
-
-        # do work
-        for unit in browser.select('.cssTtableSspNavMasterContainer'):
-            yield parse_unit(unit, browser)
-
-        # move back
-        browser.back()
+        submit = form.submit_fields['ctl00$Content$ctlFilter$BtnSearch']
+        with browser.submit_form(form, submit=submit):
+            for unit in browser.select('.cssTtableSspNavMasterContainer'):
+                yield parse_unit(unit, browser)
 
 
 def write_out(units):
