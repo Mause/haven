@@ -1,9 +1,8 @@
-
-import logging
 import json
+import logging
 from collections import defaultdict
 
-import robobrowser
+from robobrowser import RoboBrowser
 import requests
 
 
@@ -78,7 +77,7 @@ def parse_unit(unit, browser):
 
 
 def get_units(sess):
-    browser = robobrowser.RoboBrowser(history=True, session=sess)
+    browser = RoboBrowser(history=True, session=sess)
 
     browser.open('https://estudent.curtin.edu.au/eStudent/')
     browser.open(
