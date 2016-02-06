@@ -111,6 +111,25 @@ def get_units(sess):
         browser.back()
 
 
+def write_out(units):
+    data = {
+        unit['unit_name'] + ' - ' + class_[0]['name'].rsplit(' ', 1)[0]:
+        [
+            '{}, {} till {}'.format(
+                option['day'],
+                option['start'].replace(":00", ""),
+                option['end'].replace(":00", "")
+            )
+            for option in class_
+        ]
+        for unit in units
+        for class_ in unit['classes'].values()
+    }
+
+    with open('timetables/classes.json', 'w') as fh:
+        json.dump(data, fh, indent=4)
+
+
 def main():
     sess = requests.Session()
     import betamax
@@ -138,22 +157,7 @@ def main():
         from pprint import pprint
         pprint(units)
 
-        data = {
-            unit['unit_name'] + ' - ' + class_[0]['name'].rsplit(' ', 1)[0]:
-            [
-                '{}, {} till {}'.format(
-                    option['day'],
-                    option['start'].replace(":00", ""),
-                    option['end'].replace(":00", "")
-                )
-                for option in class_
-            ]
-            for unit in units
-            for class_ in unit['classes'].values()
-        }
-
-        with open('timetables/classes.json', 'w') as fh:
-            json.dump(data, fh, indent=4)
+        write_out(units)
 
 
 if __name__ == '__main__':
