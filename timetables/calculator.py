@@ -3,7 +3,7 @@ from hashlib import md5
 from os.path import join
 from datetime import timedelta
 from operator import attrgetter
-from itertools import product, tee
+from itertools import product, tee, count
 from collections import defaultdict
 
 from arrow import Arrow
@@ -13,7 +13,8 @@ from loader import load_classes
 from renderer import render
 
 
-DAYS = dict(zip(calendar.day_name, range(len(calendar.day_name))))
+
+DAYS = dict(zip(calendar.day_name, count()))
 BAD_DAYS = {
     'Thursday',
     'Tuesday',
