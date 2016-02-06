@@ -80,7 +80,7 @@ def average_starting_time(days) -> timedelta:
     calculate the average time since the start of that day
     '''
     days = [
-        sorted(day, key=lambda class_: class_.start)[0].start
+        sorted(day, key=attrgetter('start'))[0].start
         for day in days.values()
     ]
     days = map(Arrow.fromdatetime, days)
