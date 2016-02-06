@@ -28,15 +28,18 @@ def groupby(iterable, key):
     return dict(items)
 
 
+def get_attrs(el):
+    return {
+        attr.get('name').split('$Hidden')[-1]: attr.get('value')
+        for attr in el.find_all('input')
+    }
+
+
 def parse_classes(browser):
     for day in browser.select('.cssTtbleColDay'):
         day_name = day.find(class_='cssTtbleColHeaderInner').span.text
         for class_ in day.select('.cssClassContainer'):
-            attrs = class_.find_all('input')
-            attrs = {
-                attr.get('name').split('$Hidden')[-1]: attr.get('value')
-                for attr in attrs
-            }
+            attrs = get_attrs(class_)
             if 'ClassNo' not in attrs:
                 continue
             name, _, location = class_.div.div.div.find_all('span')
