@@ -6,6 +6,7 @@ from operator import attrgetter
 from itertools import product, tee, count
 from collections import defaultdict
 
+import numpy as np
 from arrow import Arrow
 from dateutil.relativedelta import relativedelta
 
@@ -129,9 +130,9 @@ def even_number_of_classes_per_day(days) -> bool:
     Given a list of lists representing days, calculates the stddev for the
     number of classes per day.
     '''
-    import numpy as np
+    classes_per_day = list(map(len, days.values()))
 
-    return np.array(list(map(len, days.values()))).std() < 1.5
+    return np.array(classes_per_day).std() < 1.5
 
 
 def main():
