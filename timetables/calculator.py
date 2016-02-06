@@ -46,13 +46,16 @@ def sort_into_days(classes) -> dict:
     '''
     Given an iterable of objects with a `start` attribute, sorts them into the
     weekday on which they occur
+
+    ::code::
+        {weekday_num: [classes]}
     '''
     days = defaultdict(list)
 
     for class_ in classes:
         days[class_.start.weekday()].append(class_)
 
-    return dict(days)
+    return dict(days)  # convert defaultdict to normal dict
 
 
 def overlaps_on_days(days) -> bool:
@@ -70,6 +73,10 @@ def none_on_bad_days(days) -> bool:
 
 
 def average_starting_time(days) -> timedelta:
+    '''
+    Given a dictionary mapping days to lists of with a `start` attribute,
+    calculate the average time since the start of that day
+    '''
     days = [
         sorted(day, key=lambda class_: class_.start)[0].start
         for day in days.values()
@@ -86,6 +93,7 @@ def average_starting_time(days) -> timedelta:
 
 
 def rel(rd: relativedelta) -> timedelta:
+    'Converts a relativedelta to a comparable timedelta'
     rd = {
         'days': rd.days,
         'hours': rd.hours,
@@ -109,6 +117,9 @@ def rel(rd: relativedelta) -> timedelta:
 def all_possible_class_combinations(classes):
     possibles = product(*classes)
     possibles = map(sort_into_days, possibles)
+
+    # this just removes completely invalid class patterns
+    # due to class overlaps
     return filter(lambda days: not overlaps_on_days(days), possibles)
 
 
