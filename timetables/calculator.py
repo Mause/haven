@@ -24,7 +24,7 @@ BAD_DAYS = {
     'Tuesday',
     'Friday'
 }
-Lunch = namedtuple('Lunch', 'start,end')
+TimePeriod = namedtuple('TimePeriod', 'start,end')
 
 
 def pairs(iterable):
@@ -139,13 +139,25 @@ def even_number_of_classes_per_day(days) -> bool:
     return np.array(classes_per_day).std() < 1.5
 
 
-def lunch_on_day(day):
+def time_period_on_day(timeperiod, day):
     day = parse_date(day_name[day])
 
-    start = day.replace(hour=12)
-    end = day.replace(hour=1)
+    start, end = timeperiod
+    start = day.replace(hour=start)
+    end = day.replace(hour=end)
 
-    return Lunch(start, end)
+    return TimePeriod(start, end)
+
+
+def classes_during_time_period(timeperiod, days):
+    return any(
+        overlaps_on_day(day + [time_period_on_day(timeperiod, day_num)])
+        for day_num, day in days.items()
+    )
+
+
+def classes_during_lunch(days):
+    return classes_during_time_period(TimePeriod(12, 1), days)
 
 
 def main():
