@@ -5,9 +5,12 @@ from datetime import timedelta
 from operator import attrgetter
 from itertools import product, tee, count
 from collections import defaultdict
+from collections import namedtuple
+from calendar import day_name
 
 import numpy as np
 from arrow import Arrow
+from dateutil.parser import parse as parse_date
 from dateutil.relativedelta import relativedelta
 
 from loader import load_classes
@@ -21,6 +24,7 @@ BAD_DAYS = {
     'Tuesday',
     'Friday'
 }
+Lunch = namedtuple('Lunch', 'start,end')
 
 
 def pairs(iterable):
@@ -133,6 +137,15 @@ def even_number_of_classes_per_day(days) -> bool:
     classes_per_day = list(map(len, days.values()))
 
     return np.array(classes_per_day).std() < 1.5
+
+
+def lunch_on_day(day):
+    day = parse_date(day_name[day])
+
+    start = day.replace(hour=12)
+    end = day.replace(hour=1)
+
+    return Lunch(start, end)
 
 
 def main():
