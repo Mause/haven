@@ -19,6 +19,14 @@ class InvalidClassDefinition(ValueError):
     pass
 
 
+def spec_parse_time(timestr):
+    t = parse_time(timestr)
+
+    # have every date be relative to this one
+    # (the only important part of a date is its weekday)
+    return t.replace(year=2016, month=2, day=8 + t.weekday())
+
+
 def parse_times(timestr: str) -> (datetime, datetime):
     match = RE.match(timestr)
 
@@ -36,8 +44,8 @@ def parse_times(timestr: str) -> (datetime, datetime):
         )
 
     span = (
-        parse_time(start + ' ' + weekday),
-        parse_time(end + ' ' + weekday)
+        spec_parse_time(start + ' ' + weekday),
+        spec_parse_time(end + ' ' + weekday)
     )
 
     diff = span[1] - span[0]
