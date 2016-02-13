@@ -25,6 +25,7 @@ BAD_DAYS = {
     'Friday'
 }
 TimePeriod = namedtuple('TimePeriod', 'start,end')
+LUNCH = TimePeriod(12, 12 + 2)
 
 
 def pairs(iterable):
@@ -157,7 +158,7 @@ def classes_during_time_period(timeperiod, days):
 
 
 def classes_during_lunch(days):
-    return classes_during_time_period(TimePeriod(12, 1), days)
+    return classes_during_time_period(LUNCH, days)
 
 
 def main():
