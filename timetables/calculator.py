@@ -186,21 +186,20 @@ def main():
         do_render(possible)
 
 
-def determine_filename(possible):
+def determine_hash(possible):
     # work is required to get these things to be deterministic
-    filename = sorted(
+    data = sorted(
         (key, sorted(value))
         for key, value in possible.items()
     )
-    filename = str(filename)
-    filename = md5(filename.encode()).hexdigest()
-    return '{}.png'.format(filename)
+    data = str(data)
+    return md5(data.encode()).hexdigest()
 
 
 def do_render(possible):
     img = render(possible)
 
-    filename = determine_filename(possible)
+    filename = '{}.png'.format(determine_hash(possible))
     img.save(join('possibles', filename))
 
 if __name__ == '__main__':
