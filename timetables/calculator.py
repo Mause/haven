@@ -103,7 +103,7 @@ def average_starting_time(days) -> timedelta:
     return sum(days[1:], days[0]) / len(days)
 
 
-def rel(rd: relativedelta) -> timedelta:
+def relative_to_time(rd: relativedelta) -> timedelta:
     'Converts a relativedelta to a comparable timedelta'
     rd = {
         'days': rd.days,
@@ -174,7 +174,7 @@ def main():
     # user specifyable
     possibles = filter(none_on_bad_days, possibles)
     possibles = filter(
-        lambda days: average_starting_time(days) > rel(relativedelta(hours=9)),
+        lambda days: average_starting_time(days) > relative_to_time(relativedelta(hours=9)),
         possibles
     )
     possibles = filter(
