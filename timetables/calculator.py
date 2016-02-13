@@ -72,11 +72,15 @@ def overlaps_on_days(days) -> bool:
     )
 
 
-def none_on_bad_days(days) -> bool:
-    return not any(
+def classes_on_days(days, on_days):
+    return any(
         days.get(DAYS[day_name])
-        for day_name in BAD_DAYS
+        for day_name in on_days
     )
+
+
+def none_on_bad_days(days) -> bool:
+    return not classes_on_days(days, BAD_DAYS)
 
 
 def average_starting_time(days) -> timedelta:
