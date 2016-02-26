@@ -92,11 +92,9 @@ def parse_unit(unit, browser):
     }
 
 
-def get_units(study_periods, sess):
-    browser = ExtendedRB(history=True, session=sess)
-
+def get_root_timetable_page(browser):
     browser.open('https://estudent.curtin.edu.au/eStudent/')
-    page = browser.open(
+    return browser.open(
         'https://estudent.curtin.edu.au/eStudent/SM/StudentTtable10.aspx?',
         params={
             'r': '#CU.ESTU.STUDENT',
@@ -104,7 +102,11 @@ def get_units(study_periods, sess):
         }
     )
 
-    form = page.get_form()
+
+def get_units(study_periods, sess):
+    browser = ExtendedRB(history=True, session=sess)
+
+    form = get_root_timetable_page(browser).get_form()
     assert form
 
     elbList = form['ctl00$Content$ctlFilter$CboStudyPeriodFilter$elbList']
