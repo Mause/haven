@@ -10,12 +10,16 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class ExtendedRB(RoboBrowser):
+    def open(self, *args, **kwargs):
+        super().open(*args, **kwargs)
+        return self
+
     def submit_form(self, *args, **kwargs):
         super().submit_form(*args, **kwargs)
         return self
 
     def __enter__(self):
-        pass
+        return self
 
     def __exit__(self, *args, **kwargs):
         self.back()
@@ -88,7 +92,7 @@ def get_units(sess):
     browser = ExtendedRB(history=True, session=sess)
 
     browser.open('https://estudent.curtin.edu.au/eStudent/')
-    browser.open(
+    page = browser.open(
         'https://estudent.curtin.edu.au/eStudent/SM/StudentTtable10.aspx?',
         params={
             'r': '#CU.ESTU.STUDENT',
@@ -96,7 +100,7 @@ def get_units(sess):
         }
     )
 
-    form = browser.get_form()
+    form = page.get_form()
     assert form
 
     elbList = form['ctl00$Content$ctlFilter$CboStudyPeriodFilter$elbList']
