@@ -88,7 +88,7 @@ def parse_unit(unit, browser):
     }
 
 
-def get_units(sess):
+def get_units(study_periods, sess):
     browser = ExtendedRB(history=True, session=sess)
 
     browser.open('https://estudent.curtin.edu.au/eStudent/')
@@ -104,13 +104,17 @@ def get_units(sess):
     assert form
 
     elbList = form['ctl00$Content$ctlFilter$CboStudyPeriodFilter$elbList']
-    # for option in elbList.options:
-    for option in ['2016 Semester 1']:
+
+    assert all(sp in elbList.options for sp in study_periods)
+
+    for option in study_periods:
         elbList.value = option
 
         submit = form.submit_fields['ctl00$Content$ctlFilter$BtnSearch']
-        with browser.submit_form(form, submit=submit):
-            for unit in browser.select('.cssTtableSspNavMasterContainer'):
+        with browser.submit_form(form, submit=submit) as page:
+            units = page.select('.cssTtableSspNavMasterContainer')
+            print(len(units), 'units')
+            for unit in units:
                 yield parse_unit(unit, browser)
 
 
@@ -155,7 +159,7 @@ def main():
         with open('auth.json') as fh:
             login(sess, *json.load(fh))
 
-        units = list(get_units(sess))
+        units = list(get_units('2016 Semester 1', sess))
 
         from pprint import pprint
         pprint(units)
