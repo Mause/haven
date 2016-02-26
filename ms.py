@@ -9,6 +9,10 @@ import requests
 logging.basicConfig(level=logging.DEBUG)
 
 
+class InvalidStudyPeriod(Exception):
+    pass
+
+
 class ExtendedRB(RoboBrowser):
     def open(self, *args, **kwargs):
         super().open(*args, **kwargs)
@@ -105,7 +109,9 @@ def get_units(study_periods, sess):
 
     elbList = form['ctl00$Content$ctlFilter$CboStudyPeriodFilter$elbList']
 
-    assert all(sp in elbList.options for sp in study_periods)
+    for sp in study_periods:
+        if sp not in elbList.options:
+            raise InvalidStudyPeriod(sp)
 
     for option in study_periods:
         elbList.value = option
