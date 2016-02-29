@@ -37,6 +37,10 @@ def get_root_page(username, password):
     return browser
 
 
+def get_subject_names(username, password):
+    return get_root_page().get_form()['SubjectName'].options
+
+
 def get_quizes(subject_name, username, password):
     browser = get_root_page(username, password)
 
