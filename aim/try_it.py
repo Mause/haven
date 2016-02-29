@@ -31,10 +31,14 @@ def parse_quiz_table(table):
     ]
 
 
-def get_quizes(subject_name, username, password):
+def get_root_page(username, password):
     browser = RoboBrowser(parser='html.parser')
-
     browser.open('http://aim02.curtin.edu.au/')
+    return browser
+
+
+def get_quizes(subject_name, username, password):
+    browser = get_root_page(username, password)
 
     form = browser.get_form()
 
