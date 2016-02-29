@@ -72,7 +72,7 @@ def main():
     quizes = get_quizes(subject_name, username, password)
 
     with open('out.ics', 'wb') as fh:
-        fh.write(quizes_as_ics(quizes, subject_name, username, password))
+        fh.write(quizes_as_ics(quizes, subject_name))
 
 if __name__ == '__main__':
     main()
