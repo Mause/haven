@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from getpass import getpass
 from icalendar import Calendar, Event
 from robobrowser import RoboBrowser
 from dateutil.parser import parse as parse_date
@@ -66,7 +67,7 @@ def quizes_as_ics(quizes, subject_name):
 
 def main():
     subject_name = 'M136'
-    username, password = '17690579', input('Password')
+    username, password = '17690579', getpass('Password: ')
 
     quizes = get_quizes(subject_name, username, password)
 
