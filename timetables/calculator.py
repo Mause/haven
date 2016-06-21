@@ -88,8 +88,12 @@ def average_starting_time(days) -> timedelta:
     Given a dictionary mapping days to lists of with a `start` attribute,
     calculate the average time since the start of that day
     '''
+    return average_n_time(days, 'start')
+
+
+def average_n_time(days, attr) -> timedelta:
     days = [
-        sorted(day, key=attrgetter('start'))[0].start
+        sorted(day, key=attrgetter(attr))[0].start
         for day in days.values()
     ]
     days = map(Arrow.fromdatetime, days)
