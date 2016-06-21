@@ -91,6 +91,10 @@ def average_starting_time(days) -> timedelta:
     return average_n_time(days, 'start')
 
 
+def average_ending_time(days) -> timedelta:
+    return average_n_time(days, 'end')
+
+
 def average_n_time(days, attr) -> timedelta:
     days = [
         sorted(day, key=attrgetter(attr))[0].start
