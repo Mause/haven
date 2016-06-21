@@ -6,7 +6,6 @@ from operator import attrgetter
 from itertools import product, tee, count
 from collections import defaultdict
 from collections import namedtuple
-from calendar import day_name
 
 import numpy as np
 from arrow import Arrow
@@ -153,7 +152,7 @@ def even_number_of_classes_per_day(days) -> bool:
 
 
 def time_period_on_day(timeperiod, day):
-    day = parse_date(day_name[day])
+    day = parse_date(calendar.day_name[day])
 
     start, end = timeperiod
     start = day.replace(hour=start)
